@@ -3,10 +3,12 @@ import folium
 from streamlit_folium import st_folium
 import pandas as pd
 import branca
+import os
+import sys
 # import geopandas as gpd
 # from geopy.geocoders import Nominatim
 
-def import_table(data=r'C:\Users\Lars_Goray\Desktop\Waermenetz4.0\Projektsammlung kalte Nahwaermenetze\Tabelle_Karte.xlsx'):
+def import_table(data):
   '''imports excel data'''
   table = pd.read_excel(data,sheet_name='Sheet1')
   return table
@@ -118,6 +120,7 @@ def display_map(df):
 app_title = 'Kalte Nahwärmenetze in Deutschland'
 #icon = 'Icon_Fachhochschule_Münster.png'
 #image = 'Logo_of_Fachhochschule_Münster.png'
+data = os.path.join(sys.path[1], 'Tabelle_Karte.xlsx')
 
 def main():
     st.set_page_config(page_title=app_title)
@@ -125,7 +128,7 @@ def main():
     st.title(app_title)
 
     # Tabelle mit Wärmenetzen laden
-    df = import_table()
+    df = import_table(data)
     df = df.fillna('-') # nan und none durch "-" ersetzen
 
     # Karte laden
