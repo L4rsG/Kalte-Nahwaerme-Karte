@@ -2,7 +2,6 @@ import streamlit as st
 import folium
 from streamlit_folium import st_folium
 import pandas as pd
-import branca
 import os
 import sys
 # import geopandas as gpd
@@ -12,19 +11,6 @@ def import_table(data):
   '''imports excel data'''
   table = pd.read_csv(data)
   return table
-
-# def add_location(df):
-#   '''adds longitude and latitude to df'''
-#   longitude = []
-#   latitude = []
-#   geolocator = Nominatim(user_agent="app_name")
-#   for city in df['Stadt']:
-#     location = geolocator.geocode(city)
-#     longitude.append(location.longitude)
-#     latitude.append(location.latitude)
-#   df['Longitude'] = longitude
-#   df['Latitude'] = latitude
-#   return df
 
 def popup_html(row,df):
     i = row
@@ -100,7 +86,6 @@ def add_marker(df,m):
 
         # Popup-Tabelle
         html = popup_html(i,df)
-        iframe = branca.element.IFrame(html=html,width=510,height=280)
         popup = folium.Popup(folium.Html(html, script=True), max_width=500)
         
         #Marker erstellen
@@ -130,9 +115,21 @@ def main():
     # Tabelle mit Wärmenetzen laden
     df = import_table(data)
 
+    # Einleitungstext
+    st.write('Im Rahmen der Förderung durch das Programm „Wärmenetze 4.0“ des Bundesamts für Wirtschaft und Ausfuhrkontrolle (BAFA) beantragten die Stadtwerke Warendorf in Kooperation mit der FH Münster, neben Planung und Bau außerdem, als einziges Projekt in Deutschland, die Förderung für das 4. Modul mit dem Forschungsziel des „Capacity Building“. Die Aufgabe der FH Münster liegt darin, die Technologie der kalten Nahwärmenetze weiter in den Fokus von Wärmeversorgern zu rücken und damit aktiv zur Reduzierung der in der Wärmeversorgung anfallenden CO2-Emissionen beizutragen.')
+
+    # Kartenbeschreibung
+    st.write('Folgende Karte gibt einen Überblick über bereits realisierte und geplante kalte Nahwärmenetze in Deutschland. Klicken Sie auf einen Marker um Informationen zu dem Netz zu erhalten. In der unten stehenden Tabelle sind für jedes Netz zusätzliche detailliertere Informationen aufgetragen.')
+
+    # Email
+    st.write('Falls Sie von einem kalten Nahwärmenetz wissen, welches in unserer Sammlung noch nicht vertreten ist, oder zusätzliche Informationen zu einem Nahwärmenetz haben, kontaktieren Sie uns gerne: lars.goray@fh-muenster.de')
+    
+    # Hinweis
+    st.write('Hinweis: Die Koordinaten der abgebildeten Netze geben nicht den exakten Standort des Netzes an, sondern die Position der Stadt, in der sich das Netz befindet.')
+
     # Karte laden
     display_map(df)
-    
+
     # Tabelle darstellen
     st.write(df)
 if __name__ == '__main__':
