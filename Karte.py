@@ -10,7 +10,7 @@ import sys
 
 def import_table(data):
   '''imports excel data'''
-  table = pd.read_excel(data,sheet_name='Sheet1')
+  table = pd.read_csv(data)
   return table
 
 # def add_location(df):
@@ -120,7 +120,7 @@ def display_map(df):
 app_title = 'Kalte Nahwärmenetze in Deutschland'
 #icon = 'Icon_Fachhochschule_Münster.png'
 #image = 'Logo_of_Fachhochschule_Münster.png'
-data = os.path.join(sys.path[1], 'Tabelle_Karte.xlsx')
+data = os.path.join(sys.path[1], 'Tabelle_Karte.csv')
 
 def main():
     st.set_page_config(page_title=app_title)
@@ -129,7 +129,6 @@ def main():
 
     # Tabelle mit Wärmenetzen laden
     df = import_table(data)
-    df = df.fillna('-') # nan und none durch "-" ersetzen
 
     # Karte laden
     display_map(df)
