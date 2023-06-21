@@ -98,48 +98,91 @@ def display_map(df):
 
     map = folium.Map(location=[51.5,10.5], zoom_start=6)
     add_marker(df,map)
-    st_map = st_folium(map, height=700, width=700)
+    st_map = st_folium(map, height=700, width=800)
 
 
-app_title = 'Kalte Nahwärmenetze in Deutschland'
-#icon = 'Icon_Fachhochschule_Münster.png'<
-data = os.path.join(sys.path[1], 'Tabelle_Karte.csv')
+app_title = 'Kalte Nahwärmenetze in Deutschland'            # Titel der App
+icon = Image.open(os.path.join(sys.path[1],'FH_icon.png'))  # Pfad zum FH Icon (FH Münster Logo als Icon im Browsertab)
+data = os.path.join(sys.path[1], 'Tabelle_Karte.csv')       # Pfad zur Tabelle
+df = import_table(data)                                     # Tabelle mit Wärmenetzen laden
 
 def main():
-    st.set_page_config(page_title=app_title)
+    st.set_page_config(
+        page_title=app_title,
+        page_icon = icon,
+        layout="wide",
+        initial_sidebar_state="expanded"
+        )
     
-    # Bild darstellen
-    image = Image.open(os.path.join(sys.path[1],'FH_Logo.png'))
-    st.image(image)
+    # Titel und Logo
+    Titel, Logo = st.columns([4, 1])
+    with Titel:
+            # Titel
+            st.title(app_title)
+    with Logo:
+            # Logo darstellen
+            image = Image.open(os.path.join(sys.path[1],'FH_Logo.png'))
+            st.image(image)
 
-    # Titel
-    st.title(app_title)
+    # Mit Sidebarmenu in Kategorien unterteilen
+    with st.sidebar:
+        select = option_menu(
+            menu_title = None,
+            options=['Karte','Tabelle','FH-Seite "Wärmenetze 4.0"'],
+            icons=['map','table','house']
+        )
 
-    # Tabelle mit Wärmenetzen laden
-    df = import_table(data)
+    if select == 'Karte':
+        # Einleitungstext
+        st.write('Im Rahmen der Förderung durch das Programm „Wärmenetze 4.0“ des Bundesamts für Wirtschaft und Ausfuhrkontrolle (BAFA) beantragten die Stadtwerke Warendorf in Kooperation mit der FH Münster, neben Planung und Bau außerdem, als einziges Projekt in Deutschland, die Förderung für das 4. Modul mit dem Forschungsziel des „Capacity Building“. Die Aufgabe der FH Münster liegt darin, die Technologie der kalten Nahwärmenetze weiter in den Fokus von Wärmeversorgern zu rücken und damit aktiv zur Reduzierung der in der Wärmeversorgung anfallenden CO2-Emissionen beizutragen.')
+        st.subheader('Karte mit kalten Nahwärmenetzen in Deutschland')
 
-    # with st.sidebar:
-    #     select = option_menu(
-    #         menu_title = None,
-    #         options=['Karte','Tabelle','FH Seite "Wärmenetze 4.0"']
-    #     )
+        # Kartenbeschreibung
+        st.write('Folgende Karte gibt einen Überblick über bereits realisierte und geplante kalte Nahwärmenetze in Deutschland. Klicken Sie auf einen Marker um Informationen zu dem Netz zu erhalten. Unter dem Reiter "Tabelle" sind für jedes Netz zusätzliche detailliertere Informationen angegeben.')
+        
+        '---'
 
-    # Einleitungstext
-    st.write('Im Rahmen der Förderung durch das Programm „Wärmenetze 4.0“ des Bundesamts für Wirtschaft und Ausfuhrkontrolle (BAFA) beantragten die Stadtwerke Warendorf in Kooperation mit der FH Münster, neben Planung und Bau außerdem, als einziges Projekt in Deutschland, die Förderung für das 4. Modul mit dem Forschungsziel des „Capacity Building“. Die Aufgabe der FH Münster liegt darin, die Technologie der kalten Nahwärmenetze weiter in den Fokus von Wärmeversorgern zu rücken und damit aktiv zur Reduzierung der in der Wärmeversorgung anfallenden CO2-Emissionen beizutragen.')
+        col1, col2 = st.columns([5,2])
+        with col1:
+            # Karte laden
+            display_map(df)
 
-    # Kartenbeschreibung
-    st.write('Folgende Karte gibt einen Überblick über bereits realisierte und geplante kalte Nahwärmenetze in Deutschland. Klicken Sie auf einen Marker um Informationen zu dem Netz zu erhalten. In der unten stehenden Tabelle sind für jedes Netz zusätzliche detailliertere Informationen aufgetragen.')
+        with col2:
+            # Hinweis
+            st.write('Hinweis: Die Koordinaten der abgebildeten Netze geben nicht den exakten Standort des Netzes an, sondern die Position der Stadt, in der sich das Netz befindet.')
+            
+            # Email Kontakt
+            st.write('Falls Sie von einem kalten Nahwärmenetz wissen, welches in unserer Sammlung noch nicht vertreten ist, oder zusätzliche Informationen zu einem Nahwärmenetz haben, schreiben Sie uns gerne an: lars.goray@fh-muenster.de')
 
-    # Email
-    st.write('Falls Sie von einem kalten Nahwärmenetz wissen, welches in unserer Sammlung noch nicht vertreten ist, oder zusätzliche Informationen zu einem Nahwärmenetz haben, kontaktieren Sie uns gerne: lars.goray@fh-muenster.de')
+    if select == 'Tabelle':
+        st.subheader('Tabelle mit kalten Nahwärmenetzen in Deutschland')
+        st.write('In dieser Tabelle sind zusätzliche detailliertere Informationen zu den kalten Nahwärmenetzen enthalten. Mit dem Pfeil-Symbol in der oberen rechten Ecke der Tabelle lässt sich die Tabelle vergrößern.')
+
+        '---'
+
+        col1, col2 = st.columns([5,2])
+        with col1:
+            st.write(df)    # Tabelle darstellen
+
+        with col2:
+            # Hinweis
+            st.write('Hinweis: Die Koordinaten der abgebildeten Netze geben nicht den exakten Standort des Netzes an, sondern die Position der Stadt, in der sich das Netz befindet.')
+            
+            # Email Kontakt
+            st.write('Falls Sie von einem kalten Nahwärmenetz wissen, welches in unserer Sammlung noch nicht vertreten ist, oder zusätzliche Informationen zu einem Nahwärmenetz haben, schreiben Sie uns gerne an: lars.goray@fh-muenster.de')
     
-    # Hinweis
-    st.write('Hinweis: Die Koordinaten der abgebildeten Netze geben nicht den exakten Standort des Netzes an, sondern die Position der Stadt, in der sich das Netz befindet.')
+    if select == 'FH-Seite "Wärmenetze 4.0"':
+        # Link zur FH Seite
+        st.write('Hier geht es zur Hauptseite "Wärmenetze 4.0 - In de Brinke" der FH Münster: https://de.fh-muenster.de/iep/waermenetze-4.0.php')
 
-    # Karte laden
-    display_map(df)
+    #Förderung
+    st.divider()
+    bafa, text = st.columns([1,3])
+    with bafa:
+        image_bafa = Image.open(os.path.join(sys.path[1],'Bundesamt_fuer_Wirtschaft_und_Ausfuhrkontrolle_Logo.png'))
+        st.image(image_bafa)
+    with text:
+        st.write('Das Projekt "Wärmenetze 4.0 - In de Brinke" wird gefördert durch das Bundesamt für Wirtschaft und Ausfuhrkontrolle.')
 
-    # Tabelle darstellen
-    st.write(df)
 if __name__ == '__main__':
     main()
