@@ -1,11 +1,11 @@
 import streamlit as st
 import folium
 from streamlit_folium import st_folium
+from streamlit_option_menu import option_menu
 import pandas as pd
 import os
 import sys
-# import geopandas as gpd
-# from geopy.geocoders import Nominatim
+from PIL import Image
 
 def import_table(data):
   '''imports excel data'''
@@ -31,10 +31,10 @@ def popup_html(row,df):
         g=int(g)
     except:()
 
-    left_col_color = "#9da4dd"
-    left_col_color2 = "#c2c9ff"
-    right_col_color = "#ddd69d"
-    right_col_color2 = "#fff8c2"
+    left_col_color = "#e2e0f5"
+    left_col_color2 = "#d0cdef"
+    right_col_color = "#f3f5e0"
+    right_col_color2 = "#ecefcd"
     
     html = """<!DOCTYPE html>
 <html>
@@ -97,23 +97,32 @@ def add_marker(df,m):
 def display_map(df):
 
     map = folium.Map(location=[51.5,10.5], zoom_start=6)
-    
     add_marker(df,map)
-
     st_map = st_folium(map, height=700, width=700)
 
+
 app_title = 'Kalte Nahwärmenetze in Deutschland'
-#icon = 'Icon_Fachhochschule_Münster.png'
-#image = 'Logo_of_Fachhochschule_Münster.png'
+#icon = 'Icon_Fachhochschule_Münster.png'<
 data = os.path.join(sys.path[1], 'Tabelle_Karte.csv')
 
 def main():
     st.set_page_config(page_title=app_title)
-    #st.image(image)
+    
+    # Bild darstellen
+    image = Image.open(os.path.join(sys.path[1],'FH_Logo.png'))
+    st.image(image)
+
+    # Titel
     st.title(app_title)
 
     # Tabelle mit Wärmenetzen laden
     df = import_table(data)
+
+    # with st.sidebar:
+    #     select = option_menu(
+    #         menu_title = None,
+    #         options=['Karte','Tabelle','FH Seite "Wärmenetze 4.0"']
+    #     )
 
     # Einleitungstext
     st.write('Im Rahmen der Förderung durch das Programm „Wärmenetze 4.0“ des Bundesamts für Wirtschaft und Ausfuhrkontrolle (BAFA) beantragten die Stadtwerke Warendorf in Kooperation mit der FH Münster, neben Planung und Bau außerdem, als einziges Projekt in Deutschland, die Förderung für das 4. Modul mit dem Forschungsziel des „Capacity Building“. Die Aufgabe der FH Münster liegt darin, die Technologie der kalten Nahwärmenetze weiter in den Fokus von Wärmeversorgern zu rücken und damit aktiv zur Reduzierung der in der Wärmeversorgung anfallenden CO2-Emissionen beizutragen.')
