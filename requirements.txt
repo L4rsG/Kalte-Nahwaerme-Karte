@@ -3,3 +3,4 @@ folium
 streamlit_folium
 pandas
 streamlit-option-menu
+MarkerCluster
