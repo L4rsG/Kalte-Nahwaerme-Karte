@@ -198,10 +198,12 @@ def main():
     st.divider()
     bafa, text = st.columns([1,3])
     with bafa:
-        image_bafa = Image.open(os.path.join(sys.path[1],'Bundesamt_fuer_Wirtschaft_und_Ausfuhrkontrolle_Logo.png'))
+        image_bafa = Image.open(os.path.join(sys.path[1],'bafa.png'))
         st.image(image_bafa)
     with text:
         st.write('Das Projekt "Wärmenetze 4.0 - In de Brinke" wird gefördert durch das Bundesamt für Wirtschaft und Ausfuhrkontrolle.')
-
+    st.write(sys.path[0])
+    st.write(sys.path[1])
+    st.write(sys.path[2])
 if __name__ == '__main__':
     main()
