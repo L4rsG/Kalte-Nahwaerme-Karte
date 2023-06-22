@@ -6,6 +6,7 @@ import pandas as pd
 import os
 import sys
 from PIL import Image
+from folium.plugins import MarkerCluster
 
 def import_table(data):
   '''imports excel data'''
@@ -71,15 +72,25 @@ def popup_html(row,df):
 </table>
 </html>
 """
-
     return html
+
+def find_multi_values(df):
+     '''searches column for multiple entries and returns a list with the entries'''
+     value_counts = df['Stadt'].value_counts()
+     multiples = value_counts[value_counts>1].index.tolist()
+     return multiples
+
 def add_marker(df,m):
     '''
     adds markers on the map m
     df: table/DataFrame
     m: map
     '''
+    
+    multiples = find_multi_values(df) # mehrfach vorkommende Städte
+    clusters = {}
     for i in range (0,len(df)):
+        
         # Koordinaten zuordnen
         lng = df['Longitude'][i]
         lat = df['Latitude'][i]
@@ -88,11 +99,19 @@ def add_marker(df,m):
         html = popup_html(i,df)
         popup = folium.Popup(folium.Html(html, script=True), max_width=500)
         
-        #Marker erstellen
-        folium.Marker(
-        location=[lat, lng],
-        popup=popup,
-        ).add_to(m)
+        # Prüfen ob der Ort mehrmals vorkommt
+        stadt = df['Stadt'][i]
+        if stadt in multiples:
+            # Überprüfen, ob der Cluster bereits existiert
+            if stadt not in clusters:
+                cluster_name = 'cluster_' + str(stadt)
+                clusters[stadt] = MarkerCluster(name=cluster_name).add_to(m)
+            cluster = clusters[stadt]
+            # Marker erstellen und zum Cluster hinzufügen
+            folium.Marker(location=[lat, lng], popup=popup).add_to(cluster)
+        else:
+            # Marker erstellen
+            folium.Marker(location=[lat, lng], popup=popup).add_to(m)
 
 def display_map(df):
 
