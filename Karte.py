@@ -3,8 +3,6 @@ import folium
 from streamlit_folium import st_folium
 from streamlit_option_menu import option_menu
 import pandas as pd
-import os
-import sys
 from PIL import Image
 from folium.plugins import MarkerCluster
 
@@ -121,8 +119,8 @@ def display_map(df):
 
 
 app_title = 'Kalte Nahwärmenetze in Deutschland'            # Titel der App
-icon = Image.open(os.path.join(sys.path[1],'FH_icon.png'))  # Pfad zum FH Icon (FH Münster Logo als Icon im Browsertab)
-data = os.path.join(sys.path[1], 'Tabelle_Karte.csv')       # Pfad zur Tabelle
+icon = Image.open('FH_icon.png')  # Pfad zum FH Icon (FH Münster Logo als Icon im Browsertab)
+data = ('Tabelle_Karte.csv')       # Pfad zur Tabelle
 df = import_table(data)                                     # Tabelle mit Wärmenetzen laden
 
 def main():
@@ -140,7 +138,7 @@ def main():
             st.title(app_title)
     with Logo:
             # Logo darstellen
-            image = Image.open(os.path.join(sys.path[1],'FH_Logo.png'))
+            image = Image.open('FH_Logo.png')
             st.image(image)
 
     # Mit Sidebarmenu in Kategorien unterteilen
@@ -198,12 +196,9 @@ def main():
     st.divider()
     bafa, text = st.columns([1,3])
     with bafa:
-        image_bafa = Image.open(os.path.join(sys.path[1],'bafa.png'))
+        image_bafa = Image.open('bafa.png')
         st.image(image_bafa)
     with text:
         st.write('Das Projekt "Wärmenetze 4.0 - In de Brinke" wird gefördert durch das Bundesamt für Wirtschaft und Ausfuhrkontrolle.')
-    st.write(sys.path[0])
-    st.write(sys.path[1])
-    st.write(sys.path[2])
 if __name__ == '__main__':
     main()
