@@ -6,11 +6,13 @@ import pandas as pd
 from PIL import Image
 from folium.plugins import MarkerCluster
 
+@st.cache_data
 def import_table(data):
   '''imports excel data'''
   table = pd.read_csv(data)
   return table
 
+@st.cache_data
 def popup_html(row,df):
     i = row
     city=df['Stadt'].iloc[i]
@@ -78,6 +80,7 @@ def find_multi_values(df):
      multiples = value_counts[value_counts>1].index.tolist()
      return multiples
 
+@st.cache_data
 def add_marker(df,m):
     '''
     adds markers on the map m
@@ -111,6 +114,7 @@ def add_marker(df,m):
             # Marker erstellen
             folium.Marker(location=[lat, lng], popup=popup).add_to(m)
 
+@st.cache_data
 def display_map(df):
 
     map = folium.Map(location=[51.5,10.5], zoom_start=6)
