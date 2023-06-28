@@ -89,7 +89,7 @@ def find_multi_values(df):
      multiples = value_counts[value_counts>1].index.tolist()
      return multiples
 
-@st.cache_data
+#@st.cache_data
 def add_marker(df,m):
     '''
     adds markers on the map m
