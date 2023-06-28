@@ -130,11 +130,9 @@ def display_map(df):
     add_marker(df,map)
     st_map = st_folium(map, height=700, width=800)
 
-data = ('Tabelle_Karte.csv')       # Pfad zur Tabelle
-df = import_table(data)                                     # Tabelle mit Wärmenetzen laden
-
 def main():
-    
+    data = ('Tabelle_Karte.csv')       # Pfad zur Tabelle
+    df = import_table(data)            # Tabelle mit Wärmenetzen laden
     # Titel und Logo
     Titel, Logo = st.columns([4, 1])
     with Titel:
