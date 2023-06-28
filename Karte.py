@@ -15,13 +15,13 @@ st.set_page_config(
         layout="wide",
         initial_sidebar_state="expanded"
         )
-@st.cache_data
+#@st.cache_data
 def import_table(data):
   '''imports excel data'''
   table = pd.read_csv(data)
   return table
 
-@st.cache_data
+#@st.cache_data
 def popup_html(row,df):
     i = row
     city=df['Stadt'].iloc[i]
