@@ -123,7 +123,7 @@ def add_marker(df,m):
             # Marker erstellen
             folium.Marker(location=[lat, lng], popup=popup).add_to(m)
 
-@st.cache_data
+#@st.cache_data
 def display_map(df):
 
     map = folium.Map(location=[51.5,10.5], zoom_start=6)
