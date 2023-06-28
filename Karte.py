@@ -6,6 +6,12 @@ import pandas as pd
 from PIL import Image
 from folium.plugins import MarkerCluster
 
+st.set_page_config(
+        page_title=app_title,
+        page_icon = icon,
+        layout="wide",
+        initial_sidebar_state="expanded"
+        )
 @st.cache_data
 def import_table(data):
   '''imports excel data'''
@@ -128,12 +134,6 @@ data = ('Tabelle_Karte.csv')       # Pfad zur Tabelle
 df = import_table(data)                                     # Tabelle mit Wärmenetzen laden
 
 def main():
-    st.set_page_config(
-        page_title=app_title,
-        page_icon = icon,
-        layout="wide",
-        initial_sidebar_state="expanded"
-        )
     
     # Titel und Logo
     Titel, Logo = st.columns([4, 1])
