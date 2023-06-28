@@ -20,7 +20,7 @@ def import_table(data):
   '''imports excel data'''
   table = pd.read_csv(data)
   return table
-
+@st.cache_data
 def popup_html(row,df):
     i = row
     city=df['Stadt'].iloc[i]
