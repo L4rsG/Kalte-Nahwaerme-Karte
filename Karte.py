@@ -16,7 +16,6 @@ st.set_page_config(
         initial_sidebar_state="expanded"
         )
 
-@st.cache_data
 def import_table(data):
   '''imports excel data'''
   table = pd.read_csv(data)
