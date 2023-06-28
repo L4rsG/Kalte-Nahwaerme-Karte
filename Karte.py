@@ -6,6 +6,9 @@ import pandas as pd
 from PIL import Image
 from folium.plugins import MarkerCluster
 
+app_title = 'Kalte Nahwärmenetze in Deutschland'            # Titel der App
+icon = Image.open('FH_icon.png')  # Pfad zum FH Icon (FH Münster Logo als Icon im Browsertab)
+
 st.set_page_config(
         page_title=app_title,
         page_icon = icon,
@@ -127,9 +130,6 @@ def display_map(df):
     add_marker(df,map)
     st_map = st_folium(map, height=700, width=800)
 
-
-app_title = 'Kalte Nahwärmenetze in Deutschland'            # Titel der App
-icon = Image.open('FH_icon.png')  # Pfad zum FH Icon (FH Münster Logo als Icon im Browsertab)
 data = ('Tabelle_Karte.csv')       # Pfad zur Tabelle
 df = import_table(data)                                     # Tabelle mit Wärmenetzen laden
 
