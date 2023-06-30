@@ -8,7 +8,6 @@ from folium.plugins import MarkerCluster
 
 app_title = 'Kalte Nahwärmenetze in Deutschland'            # Titel der App
 icon = Image.open('FH_icon.png')  # Pfad zum FH Icon (FH Münster Logo als Icon im Browsertab)
-
 st.set_page_config(
         page_title=app_title,
         page_icon = icon,
@@ -17,9 +16,9 @@ st.set_page_config(
         )
 
 def import_table(data):
-  '''imports excel data'''
-  table = pd.read_csv(data)
-  return table
+    '''imports excel data'''
+    table = pd.read_csv(data)
+    return table
 
 def popup_html(row,df):
     i = row
