@@ -20,65 +20,77 @@ def import_table(data):
     table = pd.read_csv(data)
     return table
 
-def popup_html(row,df):
+def popup_html(row, df):
     i = row
-    city=df['Stadt'].iloc[i]
-    project_name=df['Projektname'].iloc[i]  
-    operator=df['Betreiber'].iloc[i]
-    year=df['Fertigstellung'].iloc[i]
-    we=df['Anzahl der Wohneinheiten'].iloc[i]
-    g=df['Anzahl der Gebäude'].iloc[i]
-    link=df['Internet-Link'].iloc[i]
-
-    # Wohneinheiteun und Gebäude wurden als float dargestellt deshalb:
-    try:
-        we=int(we)
-    except:()
+    city = df['Stadt'].iloc[i]
+    project_name = df['Projektname'].iloc[i]
+    operator = df['Betreiber'].iloc[i]
+    year = df['Fertigstellung'].iloc[i]
+    we = df['Anzahl der Wohneinheiten'].iloc[i]
+    g = df['Anzahl der Gebäude'].iloc[i]
+    links = df['Internet-Link'].iloc[i].split(",")  # Links aufteilen
 
     try:
-        g=int(g)
-    except:()
+        we = int(we)
+    except:
+        pass
+
+    try:
+        g = int(g)
+    except:
+        pass
 
     left_col_color = "#e2e0f5"
     left_col_color2 = "#d0cdef"
     right_col_color = "#f3f5e0"
     right_col_color2 = "#ecefcd"
-    
+
     html = """<!DOCTYPE html>
-<html>
-<head>
-<h4 style="margin-bottom:10"; width="200px">{}</h4>""".format(city) + """
-</head>
-    <table style="height: 150px; width: 500px;">
-<tbody>
-<tr>
-<td style="width: 100px;background-color: """+ left_col_color +""";"><span style="color: #000000;">Projektname</span></td>
-<td style="background-color: """+ right_col_color +""";">{}</td>""".format(project_name) + """
-</tr>
-<tr>
-<td style="width: 100px;background-color: """+ left_col_color2 +""";"><span style="color: #000000;">Betreiber</span></td>
-<td style="background-color: """+ right_col_color2 +""";">{}</td>""".format(operator) + """
-</tr>
-<tr>
-<td style="width: 100px;background-color: """+ left_col_color +""";"><span style="color: #000000;">Fertigstellung</span></td>
-<td style="background-color: """+ right_col_color +""";">{}</td>""".format(year) + """
-</tr>
-<tr>
-<td style="width: 100px;background-color: """+ left_col_color2 +""";"><span style="color: #000000;">Wohneinheiten</span></td>
-<td style="background-color: """+ right_col_color2 +""";">{}</td>""".format(we) + """
-</tr>
-<tr>
-<td style="width: 100px;background-color: """+ left_col_color +""";"><span style="color: #000000;">Gebäude</span></td>
-<td style="background-color: """+ right_col_color +""";">{}</td>""".format(g) + """
-</tr>
-<tr>
-<td style="width: 100px;background-color: """+ left_col_color2 +""";"><span style="color: #000000;">Quelle</span></td>
-<td style="background-color: """+ right_col_color2 +""";">{}</td>""".format(link) + """
-</tr>
-</tbody>
-</table>
-</html>
-"""
+    <html>
+    <head>
+    <h4 style="margin-bottom:10"; width="200px">{}</h4>""".format(city) + """
+    </head>
+        <table style="height: 150px; width: 500px;">
+    <tbody>
+    <tr>
+    <td style="width: 100px;background-color: """ + left_col_color + """;"><span style="color: #000000;">Projektname</span></td>
+    <td style="background-color: """ + right_col_color + """;">{}</td>""".format(project_name) + """
+    </tr>
+    <tr>
+    <td style="width: 100px;background-color: """ + left_col_color2 + """;"><span style="color: #000000;">Betreiber</span></td>
+    <td style="background-color: """ + right_col_color2 + """;">{}</td>""".format(operator) + """
+    </tr>
+    <tr>
+    <td style="width: 100px;background-color: """ + left_col_color + """;"><span style="color: #000000;">Fertigstellung</span></td>
+    <td style="background-color: """ + right_col_color + """;">{}</td>""".format(year) + """
+    </tr>
+    <tr>
+    <td style="width: 100px;background-color: """ + left_col_color2 + """;"><span style="color: #000000;">Wohneinheiten</span></td>
+    <td style="background-color: """ + right_col_color2 + """;">{}</td>""".format(we) + """
+    </tr>
+    <tr>
+    <td style="width: 100px;background-color: """ + left_col_color + """;"><span style="color: #000000;">Gebäude</span></td>
+    <td style="background-color: """ + right_col_color + """;">{}</td>""".format(g) + """
+    </tr>
+    <tr>
+    <td style="width: 100px;background-color: """ + left_col_color2 + """;"><span style="color: #000000;">Quelle</span></td>
+    <td style="background-color: """ + right_col_color2 + """;">"""
+
+    # Hyperlinks generieren
+    for link in links:
+        link_text = link.strip()
+        if link_text != "Eigene Recherche in Kooperation mit der WEV Warendorf Energieversorgung GmbH":
+            html += '<a href="{}" target="_blank">{}</a><br>'.format(link_text, link_text)
+        else:
+            html += link_text + "<br>"
+
+    html += """
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    </body>
+    </html>"""
     return html
 
 def find_multi_values(df):
@@ -115,10 +127,18 @@ def add_marker(df,m):
                 clusters[stadt] = MarkerCluster(name=cluster_name).add_to(m)
             cluster = clusters[stadt]
             # Marker erstellen und zum Cluster hinzufügen
-            folium.Marker(location=[lat, lng], popup=popup).add_to(cluster)
+            if stadt == 'Warendorf':
+                icon = folium.Icon(color='red', icon='info-sign')  # Roter Marker für Warendorf
+            else:
+                icon = folium.Icon(color='blue', icon='info-sign')  # Blauer Marker für andere Städte
+            folium.Marker(location=[lat, lng], popup=popup, icon=icon).add_to(cluster)
         else:
             # Marker erstellen
-            folium.Marker(location=[lat, lng], popup=popup).add_to(m)
+            if stadt == 'Warendorf':
+                icon = folium.Icon(color='red', icon='info-sign')  # Roter Marker für Warendorf
+            else:
+                icon = folium.Icon(color='blue', icon='info-sign')  # Blauer Marker für andere Städte
+            folium.Marker(location=[lat, lng], popup=popup, icon=icon).add_to(m)
 
 def display_map(df):
     map = folium.Map(location=[51.5,10.5], zoom_start=6)
