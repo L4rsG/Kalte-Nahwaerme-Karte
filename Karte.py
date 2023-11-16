@@ -141,7 +141,11 @@ def add_marker(df,m):
             folium.Marker(location=[lat, lng], popup=popup, icon=icon).add_to(m)
 
 def display_map(df):
-    map = folium.Map(location=[51.5,10.5], zoom_start=6)
+    attr = (
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    )
+    tiles = 'https://tile.openstreetmap.de/{z}/{x}/{y}.png'
+    map = folium.Map(location=[51.5,10.5], zoom_start=6, tiles = tiles, attr=attr)
     add_marker(df,map)
     st_map = st_folium(map, height=700, width=800)
 
