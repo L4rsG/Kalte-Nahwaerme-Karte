@@ -142,10 +142,9 @@ def add_marker(df,m):
 
 def display_map(df):
     attr = (
-    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> '
-    'contributors, &copy; <a href="https://cartodb.com/attributions">CartoDB</a>'
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     )
-    tiles = "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png"
+    tiles = 'https://tile.openstreetmap.de/{z}/{x}/{y}.png'
     map = folium.Map(location=[51.5,10.5], zoom_start=6, tiles = tiles, attr=attr)
     add_marker(df,map)
     st_map = st_folium(map, height=700, width=800)
