@@ -217,7 +217,7 @@ def main():
     st.divider()
     bafa, text = st.columns([1,3])
     with bafa:
-        image_bafa = Image.open('bafa.png')
+        image_bafa = Image.open('förderung.png')
         st.image(image_bafa)
     with text:
         st.write('Das Projekt "Wärmenetze 4.0 - In de Brinke" wird gefördert durch das Bundesamt für Wirtschaft und Ausfuhrkontrolle.')
