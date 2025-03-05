@@ -211,7 +211,7 @@ def main():
     
     if select == 'FH-Seite "Wärmenetze 4.0"':
         # Link zur FH Seite
-        st.write('Hier geht es zur Hauptseite "Wärmenetze 4.0 - In de Brinke" der FH Münster: https://de.fh-muenster.de/iep/waermenetze-4.0.php')
+        st.write('Hier geht es zur Hauptseite "Wärmenetze 4.0 - In de Brinke" der FH Münster: https://www.fh-muenster.de/de/waermenetze/index')
 
     #Förderung
     st.divider()
